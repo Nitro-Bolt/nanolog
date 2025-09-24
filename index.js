@@ -3,27 +3,52 @@ const addColors = typeof document === 'undefined';
 
 const RESET = addColors ? '\u001b[0m' : '';
 const GRAY = addColors ? '\u001b[90m' : '';
-const BLUE = addColors ? '\u001b[34m' : '';
-const CYAN = addColors ? '\u001b[36m' : '';
-const YELLOW = addColors ? '\u001b[33m' : '';
-const RED = addColors ? '\u001b[31m' : '';
-
-const DEBUG = `${BLUE}debug${RESET}`;
-const INFO = `${CYAN}info${RESET}`;
-const WARN = `${YELLOW}warn${RESET}`;
-const ERROR = `${RED}error${RESET}`;
 
 const createLog = (namespace = '') => {
-    const log = (childNamespace) => createLog(namespace ? `${namespace} ${childNamespace}` : childNamespace);
+  const log = childNamespace =>
+    createLog(namespace ? `${namespace}::${childNamespace}` : childNamespace);
 
-    const formattedNamespace = namespace ? [`${GRAY}${namespace}${RESET}`] : [];
+  const formattedNamespace = namespace ? [`${GRAY}${namespace}${RESET}`] : [];
 
-    log.debug = log.log = console.debug.bind(console, ...formattedNamespace, DEBUG);
-    log.info = console.log.bind(console, ...formattedNamespace, INFO)
-    log.warn = log.warning = console.warn.bind(console, ...formattedNamespace, WARN)
-    log.error = console.error.bind(console, ...formattedNamespace, ERROR);
+  log.debug = log.log = console.log.bind(
+    console,
+    '%c⚡ Nitrobolt',
+    ` background-color: lightgrey; border-radius: 1rem; margin-right: 0.25rem; padding: 0 0.5rem; color: white; font-weight: normal;`,
+    ...formattedNamespace
+  );
+  log.group = console.group.bind(
+    console,
+    '%c⚡ Nitrobolt',
+    ` background-color: lightgrey; border-radius: 1rem; margin-right: 0.25rem; padding: 0 0.5rem; color: white; font-weight: normal;`,
+    ...formattedNamespace
+  );
+  log.groupCollapsed = console.groupCollapsed.bind(
+    console,
+    '%c⚡ Nitrobolt',
+    ` background-color: lightgrey; border-radius: 1rem; margin-right: 0.25rem; padding: 0 0.5rem; color: white; font-weight: normal;`,
+    ...formattedNamespace
+  );
+  log.groupEnd = console.groupEnd.bind(console)
+  log.info = console.info.bind(
+    console,
+    '%c⚡ Nitrobolt',
+    ` background-color: darkblue; border-radius: 1rem; margin-right: 0.25rem; padding: 0 0.5rem; color: white; font-weight: normal;`,
+    ...formattedNamespace
+  );
+  log.warn = console.warn.bind(
+    console,
+    '%c⚡ Nitrobolt',
+    ` background-color: yellow; border-radius: 1rem; margin-right: 0.25rem; padding: 0 0.5rem; color: black; font-weight: normal;`,
+    ...formattedNamespace
+  );
+  log.error = console.error.bind(
+    console,
+    '%c⚡ Nitrobolt',
+    ` background-color: red; border-radius: 1rem; margin-right: 0.25rem; padding: 0 0.5rem; color: white; font-weight: normal;`,
+    ...formattedNamespace
+  );
 
-    return log;
+  return log;
 };
 
 /**
